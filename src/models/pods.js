@@ -1,0 +1,33 @@
+const mongoose = require("mongoose");
+
+const podSchema = new mongoose.Schema({
+  pod_name: { type: String, required: true },
+  pod_description: { type: String },
+  is_public: { type: Boolean, default: false },
+  created_by: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  invite_link: { type: String },
+  members: [
+    {
+      user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      role: { type: String, enum: ["student", "teacher"], required: true },
+      joined_at: { type: Date, default: Date.now },
+    },
+  ],
+  resources: [
+    {
+      resource_name: { type: String },
+      resource_type: { type: String, enum: ["document", "video", "link"] },
+      resource_url: { type: String },
+      uploaded_by: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      uploaded_at: { type: Date, default: Date.now },
+    },
+  ],
+  created_at: { type: Date, default: Date.now },
+  updated_at: { type: Date, default: Date.now },
+});
+
+const Pod = mongoose.model("Pod", podSchema);
+module.exports = Pod;
