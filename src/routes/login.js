@@ -27,7 +27,12 @@ router.post("/", async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.json({ token, message: "Login successful" });
+    // Return both token and user_id in the response
+    res.json({
+      token, // The generated JWT token
+      user_id: user._id, // Include the user_id
+      message: "Login successful",
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });

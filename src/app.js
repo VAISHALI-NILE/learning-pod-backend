@@ -9,6 +9,7 @@ const signupRoute = require("./routes/signup");
 const loginRoute = require("./routes/login");
 const DB_connection = require("./config/mongoConn");
 const createPodRoute = require("./routes/pods");
+const joinPodRoute = require("./routes/join");
 const tasksRoute = require("./routes/tasks");
 const messagesRoute = require("./routes/messages");
 
@@ -27,6 +28,7 @@ app.use("/", protectedRoute);
 app.use("/signup", signupRoute);
 app.use("/login", loginRoute);
 app.use("/create", createPodRoute);
+app.use("/join", joinPodRoute);
 app.use("/tasks", tasksRoute);
 app.use("/messages", messagesRoute);
 
