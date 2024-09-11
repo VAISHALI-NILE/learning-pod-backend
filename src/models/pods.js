@@ -6,9 +6,9 @@ const podSchema = new mongoose.Schema({
   is_public: { type: Boolean, default: false },
   created_by: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: "users",
   },
-  invite_link: { type: String },
+  unique_code: { type: String },
   members: [
     {
       user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
