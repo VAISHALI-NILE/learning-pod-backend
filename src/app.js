@@ -7,7 +7,7 @@ const signupRoute = require("./routes/signup");
 const loginRoute = require("./routes/login");
 const DB_connection = require("./config/mongoConn");
 const createPodRoute = require("./routes/pods");
-
+const joinPodRoute = require("./routes/join");
 const app = express();
 const PORT = process.env.PORT || 8000;
 
@@ -21,6 +21,7 @@ app.use("/", protectedRoute);
 app.use("/signup", signupRoute);
 app.use("/login", loginRoute);
 app.use("/create", createPodRoute);
+app.use("/join", joinPodRoute);
 
 // Start the server
 app.listen(PORT, () => {
