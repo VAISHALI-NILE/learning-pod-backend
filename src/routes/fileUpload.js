@@ -1,22 +1,13 @@
+// backend/routes/upload.js
 const express = require("express");
 const multer = require("multer");
-const admin = require("firebase-admin");
-const serviceAccount = require("../serviceAccountKey.json");
+const { bucket } = require("../firebaseAdmin");
 const Submission = require("../models/submission");
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: "learning-pod-9a1c8.appspot.com",
-});
-
-const bucket = admin.storage().bucket();
 const router = express.Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
-const upload = multer({
-  storage: multer.memoryStorage(),
-});
-
-router.post("/upload", upload.single("file"), (req, res) => {
+router.post("/upload", upload.single("file"), async (req, res) => {
   const { title, description, userId, podId, assignedBy } = req.body;
 
   if (!req.file) {
@@ -25,9 +16,7 @@ router.post("/upload", upload.single("file"), (req, res) => {
 
   const blob = bucket.file(req.file.originalname);
   const blobStream = blob.createWriteStream({
-    metadata: {
-      contentType: req.file.mimetype,
-    },
+    metadata: { contentType: req.file.mimetype },
   });
 
   blobStream.on("error", (err) => {
@@ -41,7 +30,9 @@ router.post("/upload", upload.single("file"), (req, res) => {
     try {
       const [signedUrl] = await blob.getSignedUrl({
         action: "read",
-        expires: "03-01-2025",
+        expires: new Date(
+          Date.now() + 1000 * 60 * 60 * 24 * 365 * 10
+        ).toISOString(),
       });
 
       const newSubmission = new Submission({
