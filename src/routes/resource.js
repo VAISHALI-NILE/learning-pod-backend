@@ -33,7 +33,7 @@ router.post("/", upload.single("file"), async (req, res) => {
     try {
       const [signedUrl] = await blob.getSignedUrl({
         action: "read",
-        expires: "03-01-2025",
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365).toISOString(), // 1 year from now
       });
 
       // Find the pod and update it with the new resource
