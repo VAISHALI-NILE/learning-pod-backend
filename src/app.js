@@ -34,7 +34,6 @@ app.use("/join", joinPodRoute);
 app.use("/tasks", tasksRoute);
 app.use("/messages", messagesRoute);
 app.use("/files", fileUploadRoutes);
-app.use("/uploads", resource);
 
 // Start the server
 app.listen(PORT, () => {
