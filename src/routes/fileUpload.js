@@ -1,20 +1,11 @@
+// src/routes/upload.js
 const express = require("express");
 const multer = require("multer");
-const admin = require("firebase-admin");
-const serviceAccount = require("../../serviceAccountKey.json");
+const { bucket } = require("../firebaseConfig");
 const Submission = require("../models/submission");
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: "learning-pod-9a1c8.appspot.com",
-});
-
-const bucket = admin.storage().bucket();
 const router = express.Router();
-
-const upload = multer({
-  storage: multer.memoryStorage(),
-});
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.post("/upload", upload.single("file"), (req, res) => {
   const { title, description, userId, podId, assignedBy } = req.body;

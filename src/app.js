@@ -13,6 +13,7 @@ const joinPodRoute = require("./routes/join");
 const tasksRoute = require("./routes/tasks");
 const messagesRoute = require("./routes/messages");
 const fileUploadRoutes = require("./routes/fileUpload");
+const resourceShareRoutes = require("./routes/resource");
 
 const resource = require("./routes/resource");
 const app = express();
@@ -34,6 +35,7 @@ app.use("/join", joinPodRoute);
 app.use("/tasks", tasksRoute);
 app.use("/messages", messagesRoute);
 app.use("/files", fileUploadRoutes);
+app.use("/resource-share", resourceShareRoutes);
 
 // Start the server
 app.listen(PORT, () => {

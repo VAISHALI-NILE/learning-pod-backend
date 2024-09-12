@@ -64,7 +64,7 @@ router.get("/get-pods", async (req, res) => {
 });
 
 // Get a pod by ID
-router.get("/:id", async (req, res) => {
+router.get("/get-resource/:id", async (req, res) => {
   try {
     const podId = req.params.id;
 
