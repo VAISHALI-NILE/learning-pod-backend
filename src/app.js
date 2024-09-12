@@ -12,6 +12,7 @@ const createPodRoute = require("./routes/pods");
 const joinPodRoute = require("./routes/join");
 const tasksRoute = require("./routes/tasks");
 const messagesRoute = require("./routes/messages");
+const fileUploadRoutes = require("./routes/fileUpload");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -31,6 +32,7 @@ app.use("/create", createPodRoute);
 app.use("/join", joinPodRoute);
 app.use("/tasks", tasksRoute);
 app.use("/messages", messagesRoute);
+app.use("/files", fileUploadRoutes);
 
 // Start the server
 app.listen(PORT, () => {
