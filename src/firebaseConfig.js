@@ -1,6 +1,6 @@
 // backend/firebaseAdmin.js
-const admin = require("firebase-admin");
 require("dotenv").config(); // Ensure dotenv is configured at the start
+const admin = require("firebase-admin");
 
 // Debugging: Log environment variables to check if they are loaded
 console.log(
