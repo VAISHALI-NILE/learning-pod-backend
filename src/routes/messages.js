@@ -1,39 +1,48 @@
 const express = require("express");
 const router = express.Router();
-
-// In-memory storage for messages
-const messages = {
-  1: [
-    { sender: 100, text: "Hello there!" },
-    { sender: 101, text: "Hi! How are you?" },
-    { sender: 100, text: "fine and you" },
-    { sender: 100, text: "I'm also fine." },
-  ],
-};
+const mongoose = require("mongoose");
+const Message = require("../models/messageSchema ");
 
 // Route to send a message
-router.post("/send", (req, res) => {
+router.post("/send", async (req, res) => {
   const { podId, senderId, text } = req.body;
 
-  if (!messages[podId]) {
-    messages[podId] = [];
+  try {
+    const newMessage = new Message({
+      pod: podId,
+      sender: senderId,
+      text,
+    });
+
+    await newMessage.save();
+    res.status(201).json({ message: "Message sent successfully", newMessage });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to send message" });
   }
-
-  const newMessage = { sender: senderId, text };
-  messages[podId].push(newMessage);
-
-  res.status(201).json({ message: "Message sent successfully", newMessage });
 });
 
 // Route to get messages for a specific pod
-router.get("/chats/:podId", (req, res) => {
-  const { podId } = req.params;
+router.get("/chats/:pod", async (req, res) => {
+  try {
+    const { pod } = req.params;
 
-  if (!messages[podId]) {
-    return res.status(404).json([]);
+    // Validate chatId (assuming it's an ObjectId)
+    if (!mongoose.Types.ObjectId.isValid(pod)) {
+      return res.status(400).json({ message: "Invalid chat ID format" });
+    }
+
+    const messages = await Message.find({ pod });
+
+    if (messages.length === 0) {
+      return res.status(404).json({ message: "No messages found" });
+    }
+
+    res.status(200).json(messages); // Ensure this is an array of messages
+  } catch (error) {
+    console.error("Error retrieving messages:", error);
+    res.status(500).json({ message: "Failed to retrieve messages" });
   }
-
-  res.status(200).json(messages[podId]);
 });
 
 module.exports = router;

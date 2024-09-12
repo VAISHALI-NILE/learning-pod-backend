@@ -3,12 +3,12 @@ const mongoose = require("mongoose");
 const messageSchema = new mongoose.Schema({
   pod: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "podSchema",
+    ref: "pods",
     required: true,
   },
   sender: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "userSchema",
+    ref: "users",
     required: true,
   },
   text: {

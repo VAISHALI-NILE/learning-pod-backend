@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Pod = require("../models/pods");
 const mongoose = require("mongoose");
+const User = require("../models/users");
 
-//create pod
+// Create pod
 router.post("/", async (req, res) => {
   try {
     const {
@@ -14,6 +15,21 @@ router.post("/", async (req, res) => {
       members,
       resources,
     } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(created_by)) {
+      return res
+        .status(400)
+        .json({ message: "Invalid user ID format for creator" });
+    }
+
+    // Validate all member IDs
+    for (const member of members) {
+      if (!mongoose.Types.ObjectId.isValid(member.user_id)) {
+        return res
+          .status(400)
+          .json({ message: "Invalid user ID format in members" });
+      }
+    }
 
     const pod = new Pod({
       pod_name,
@@ -34,7 +50,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-//get all pods
+// Get all pods
 router.get("/get-pods", async (req, res) => {
   try {
     const isPublic = req.query.is_public === "true";
@@ -51,6 +67,11 @@ router.get("/get-pods", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const podId = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(podId)) {
+      return res.status(400).json({ message: "Invalid pod ID format" });
+    }
+
     const pod = await Pod.findById(podId);
 
     if (!pod) {
@@ -65,17 +86,21 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// Get pods for a user
 router.get("/userPods/:userId", async (req, res) => {
   const { userId } = req.params;
 
   try {
-    // Find pods where the user is a member
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: "Invalid user ID format" });
+    }
+
     const pods = await Pod.find({
       "members.user_id": new mongoose.Types.ObjectId(userId),
     });
 
     if (pods.length > 0) {
-      return res.status(200).json(pods); // Send pods the user has joined
+      return res.status(200).json(pods);
     } else {
       return res.status(404).json({ message: "No pods found for this user." });
     }
