@@ -1,7 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const admin = require("firebase-admin");
-const serviceAccount = require("../serviceAccountKey.json");
+const serviceAccount = require("../../serviceAccountKey.json");
 const Submission = require("../models/submission");
 
 admin.initializeApp({
