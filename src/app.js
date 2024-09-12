@@ -14,6 +14,7 @@ const tasksRoute = require("./routes/tasks");
 const messagesRoute = require("./routes/messages");
 const fileUploadRoutes = require("./routes/fileUpload");
 
+const resource = require("./routes/resource");
 const app = express();
 const PORT = process.env.PORT || 8000;
 
