@@ -1,6 +1,6 @@
 // backend/firebaseAdmin.js
 const admin = require("firebase-admin");
-const serviceAccount = require("./serviceAccountKey.json"); // Path to your service account JSON
+const serviceAccount = require("../serviceAccountKey.json"); // Path to your service account JSON
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
