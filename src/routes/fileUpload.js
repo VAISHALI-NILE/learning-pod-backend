@@ -1,15 +1,13 @@
-// backend/routes/upload.js
+// src/routes/upload.js
 const express = require("express");
 const multer = require("multer");
-const { bucket } = require("../firebaseAdmin");
-const admin = require("firebase-admin");
-const serviceAccount = require("../../serviceAccountKey.json");
+const { bucket } = require("../firebaseConfig");
 const Submission = require("../models/submission");
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-router.post("/upload", upload.single("file"), async (req, res) => {
+router.post("/upload", upload.single("file"), (req, res) => {
   const { title, description, userId, podId, assignedBy } = req.body;
 
   if (!req.file) {
@@ -18,7 +16,9 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 
   const blob = bucket.file(req.file.originalname);
   const blobStream = blob.createWriteStream({
-    metadata: { contentType: req.file.mimetype },
+    metadata: {
+      contentType: req.file.mimetype,
+    },
   });
 
   blobStream.on("error", (err) => {
@@ -32,9 +32,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     try {
       const [signedUrl] = await blob.getSignedUrl({
         action: "read",
-        expires: new Date(
-          Date.now() + 1000 * 60 * 60 * 24 * 365 * 10
-        ).toISOString(),
+        expires: "03-01-2025",
       });
 
       const newSubmission = new Submission({

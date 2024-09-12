@@ -19,7 +19,6 @@ const podSchema = new mongoose.Schema({
   resources: [
     {
       resource_name: { type: String },
-      resource_type: { type: String, enum: ["document", "video", "link"] },
       resource_url: { type: String },
       uploaded_by: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
       uploaded_at: { type: Date, default: Date.now },
