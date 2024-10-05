@@ -1,4 +1,5 @@
-require("dotenv").config();
+require("dotenv").config({ path: "./.env" });
+
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -19,6 +20,9 @@ const notificationRoute = require("./routes/notification");
 const resource = require("./routes/resource");
 const app = express();
 const PORT = process.env.PORT || 8000;
+
+console.log("process", process.env.PRIVATE_KEY);
+console.log("port", process.env.PORT);
 
 // Middleware to parse JSON bodies
 app.use(express.json());

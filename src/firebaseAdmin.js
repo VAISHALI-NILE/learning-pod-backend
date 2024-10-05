@@ -4,7 +4,7 @@ const serviceAccount = require("./serviceAccount.json"); // Path to your service
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  storageBucket: "learning-pod-9a1c8.appspot.com", // Your Firebase Storage bucket name
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET, // Use environment variable
 });
 
 const bucket = admin.storage().bucket();
