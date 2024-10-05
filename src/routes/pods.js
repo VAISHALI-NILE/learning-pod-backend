@@ -110,4 +110,28 @@ router.get("/userPods/:userId", async (req, res) => {
   }
 });
 
+router.get("/user-role/:id", async (req, res) => {
+  console.log("working");
+  try {
+    const userId = req.params.id;
+    console.log(userId);
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: "Invalid user ID format" });
+    }
+
+    const user = await User.findById(userId).select("role");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ role: user.role });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching user role", error: error.message });
+  }
+});
+
 module.exports = router;

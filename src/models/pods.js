@@ -20,6 +20,8 @@ const podSchema = new mongoose.Schema({
     {
       resource_name: { type: String },
       resource_url: { type: String },
+      folder_name: { type: String },
+      content: { type: String },
       uploaded_by: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
       uploaded_at: { type: Date, default: Date.now },
     },

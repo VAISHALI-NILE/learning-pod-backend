@@ -14,6 +14,7 @@ const tasksRoute = require("./routes/tasks");
 const messagesRoute = require("./routes/messages");
 const fileUploadRoutes = require("./routes/fileUpload");
 const resourceShareRoutes = require("./routes/resource");
+const notificationRoute = require("./routes/notification");
 
 const resource = require("./routes/resource");
 const app = express();
@@ -36,6 +37,7 @@ app.use("/tasks", tasksRoute);
 app.use("/messages", messagesRoute);
 app.use("/files", fileUploadRoutes);
 app.use("/resource-share", resourceShareRoutes);
+app.use("/notification", notificationRoute);
 
 // Start the server
 app.listen(PORT, () => {
